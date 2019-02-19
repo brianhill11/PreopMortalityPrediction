@@ -1,0 +1,16 @@
+name: preop
+channels:
+  - brittainhard
+  - anaconda
+  - conda-forge
+  
+dependencies:
+  - python=2.7
+  - fancyimpute
+  - scikit-learn
+  - pandas
+  - numpy
+  - matplotlib
+  - imbalanced-learn
+  - xgboost
+  - jupyterlab
