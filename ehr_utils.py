@@ -29,14 +29,14 @@ PLOT_COLOURS = [COLOUR_1, COLOUR_2, COLOUR_3, COLOUR_4, COLOUR_5, COLOUR_6, COLO
 # DPI for figures (for BJA, use 1200)
 fig_dpi = 600
 # for figure text
-#label_text_size=16
-#legend_text_size=12
+label_text_size=16
+legend_text_size=12
 ## added for grant plots
 axis_text_size=2
-label_text_size=8
-legend_text_size=8
+#label_text_size=8
+#legend_text_size=8
 # default figure size
-default_size=(2.3622,2.3622)
+default_size=(8, 8)
 
 from matplotlib import rc
 #rc('font',**{'family':'sans-serif','sans-serif':['Helvetica']})
