@@ -5,6 +5,7 @@ import pandas as pd
 import csv
 import os 
 
+from scipy import interp
 from sklearn import metrics
 from sklearn.metrics import precision_recall_curve, roc_curve, average_precision_score, brier_score_loss, make_scorer
 from sklearn.metrics import auc, accuracy_score, roc_auc_score, confusion_matrix, classification_report
@@ -194,7 +195,60 @@ def plot_mean_square_error(models, model_names, mse):
     plt.legend(loc="lower right")
     plt.show()        
 
-    
+
+def plot_cross_val_roc_curve(model_probs, y_test, filename):
+    tprs = []
+    aucs = []
+    mean_fpr = np.linspace(0, 1, 100)
+
+    i = 0
+    for probs in model_probs:
+        #probas_ = classifier.fit(X[train], y[train]).predict_proba(X[test])
+        # Compute ROC curve and area the curve
+        fpr, tpr, thresholds = roc_curve(y_test, probs[:, 1])
+        tprs.append(interp(mean_fpr, fpr, tpr))
+        tprs[-1][0] = 0.0
+        roc_auc = auc(fpr, tpr)
+        aucs.append(roc_auc)
+        plt.plot(fpr, tpr, lw=1, alpha=0.3,
+                 label='ROC fold %d (AUC = %0.2f)' % (i, roc_auc))
+
+        i += 1
+    plt.plot([0, 1], [0, 1], linestyle='--', lw=2, color='r',
+             label='Chance', alpha=.8)
+
+    mean_tpr = np.mean(tprs, axis=0)
+    mean_tpr[-1] = 1.0
+    mean_auc = auc(mean_fpr, mean_tpr)
+    std_auc = np.std(aucs)
+    plt.plot(mean_fpr, mean_tpr, color='b',
+             label=r'Mean ROC (AUC = %0.2f $\pm$ %0.2f)' % (mean_auc, std_auc),
+             lw=2, alpha=.8)
+
+    std_tpr = np.std(tprs, axis=0)
+    tprs_upper = np.minimum(mean_tpr + 2.*std_tpr, 1)
+    tprs_lower = np.maximum(mean_tpr - 2.*std_tpr, 0)
+    plt.fill_between(mean_fpr, tprs_lower, tprs_upper, color='grey', alpha=.2,
+                     label=r'$\pm$ 2 std. dev.')
+
+    plt.xlim([0.0, 1.05])
+    plt.ylim([0.0, 1.05])
+    plt.yticks(np.arange(0., 1.1, 0.2))
+    plt.xticks(np.arange(0., 1.1, 0.2))
+    ax = plt.axes()
+    # default width = 2, def length = 6
+    ax.set_yticks(np.arange(0., 1.1, 0.1), minor=True)
+    ax.set_xticks(np.arange(0., 1.1, 0.1), minor=True)
+    ax.tick_params(direction='out', length=6, width=0.25, colors='black',labelsize=label_text_size)
+    ax.tick_params(axis = 'both', which = 'minor', width=0.25)
+    plt.xlabel('False Positive Rate', fontsize=label_text_size, fontname=fontname)
+    plt.ylabel('True Positive Rate', fontsize=label_text_size, fontname=fontname)
+    #plt.title('')
+    plt.legend(loc="lower right")
+    plt.savefig(filename, format="tif", dpi=fig_dpi)
+    plt.show()    
+
+
 def predict_given_threshold(probs, threshold=0.15):
     return [True if x[1] > threshold else False for x in probs]
     
