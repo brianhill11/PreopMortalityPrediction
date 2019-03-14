@@ -7,7 +7,7 @@ channels:
 dependencies:
   - python=2.7
   - fancyimpute
-  - scikit-learn
+  - scikit-learn=0.19.1
   - pandas
   - numpy
   - matplotlib
@@ -16,3 +16,4 @@ dependencies:
   - jupyterlab
   - nb_conda_kernels
   - seaborn
+  - dill=0.2.7.1

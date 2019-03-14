@@ -46,10 +46,10 @@ from matplotlib import rc
 #rc('text', usetex=True)
 import matplotlib as mpl
 mpl.rcParams['axes.linewidth'] = 0.25
-mpl.rcParams['font.sans-serif'] = "Helvetica"
+#mpl.rcParams['font.sans-serif'] = "Helvetica"
 # Then, "ALWAYS use sans-serif fonts"
-mpl.rcParams['font.family'] = "sans-serif"
-fontname="Helvetica"
+#mpl.rcParams['font.family'] = "sans-serif"
+#fontname="Helvetica"
 
 def plot_roc_curve(models, model_names, model_probs, y_test, filename):
     plt.figure(figsize=default_size)
@@ -75,12 +75,12 @@ def plot_roc_curve(models, model_names, model_probs, y_test, filename):
     ax.set_xticks(np.arange(0., 1.1, 0.1), minor=True)
     ax.tick_params(direction='out', length=6, width=0.25, colors='black',labelsize=label_text_size)
     ax.tick_params(axis = 'both', which = 'minor', width=0.25)
-    plt.xlabel('False Positive Rate', fontsize=label_text_size, fontname=fontname)
-    plt.ylabel('True Positive Rate', fontsize=label_text_size, fontname=fontname)
+    plt.xlabel('False Positive Rate', fontsize=label_text_size)
+    plt.ylabel('True Positive Rate', fontsize=label_text_size)
     #plt.title('Receiver Operating Characteristic')
     plt.legend(loc="lower right",fontsize=legend_text_size)
     plt.tight_layout()
-    plt.savefig(filename, format="tif", dpi=fig_dpi)
+    plt.savefig(filename, format="png", dpi=fig_dpi)
     plt.show()
 
 
@@ -114,7 +114,7 @@ def plot_precision_recall_curve(models, model_names, model_probs, y_test, filena
     #plt.title('Precision-Recall curve')
     plt.legend(loc="upper right", fontsize=legend_text_size)
     plt.tight_layout()
-    plt.savefig(filename, format="tif", dpi=fig_dpi)
+    plt.savefig(filename, format="png", dpi=fig_dpi)
     plt.show()
 
 
@@ -171,7 +171,7 @@ def plot_accuracy_roc_auc(models, model_names, model_predictions, model_probs, y
     plt.ylim([0.0, 1.05])
     plt.plot([1.0 - y_train.mean()]*(len(models)), color=PLOT_COLOURS[3], lw=2, linestyle='--')
     plt.tight_layout()
-    plt.savefig(filename, format="tif", dpi=fig_dpi)
+    plt.savefig(filename, format="png", dpi=fig_dpi)
     plt.show()
 
     for i in range(len(model_names)):
@@ -211,7 +211,7 @@ def plot_cross_val_roc_curve(model_probs, y_test, filename):
         roc_auc = auc(fpr, tpr)
         aucs.append(roc_auc)
         plt.plot(fpr, tpr, lw=1, alpha=0.3,
-                 label='ROC fold %d (AUC = %0.2f)' % (i, roc_auc))
+                 label='ROC fold %d (AUC = %0.3f)' % (i, roc_auc))
 
         i += 1
     plt.plot([0, 1], [0, 1], linestyle='--', lw=2, color='r',
@@ -222,7 +222,7 @@ def plot_cross_val_roc_curve(model_probs, y_test, filename):
     mean_auc = auc(mean_fpr, mean_tpr)
     std_auc = np.std(aucs)
     plt.plot(mean_fpr, mean_tpr, color='b',
-             label=r'Mean ROC (AUC = %0.2f $\pm$ %0.2f)' % (mean_auc, std_auc),
+             label=r'Mean ROC (AUC = %0.3f $\pm$ %0.3f)' % (mean_auc, std_auc),
              lw=2, alpha=.8)
 
     std_tpr = np.std(tprs, axis=0)
@@ -241,8 +241,8 @@ def plot_cross_val_roc_curve(model_probs, y_test, filename):
     ax.set_xticks(np.arange(0., 1.1, 0.1), minor=True)
     ax.tick_params(direction='out', length=6, width=0.25, colors='black',labelsize=label_text_size)
     ax.tick_params(axis = 'both', which = 'minor', width=0.25)
-    plt.xlabel('False Positive Rate', fontsize=label_text_size, fontname=fontname)
-    plt.ylabel('True Positive Rate', fontsize=label_text_size, fontname=fontname)
+    plt.xlabel('False Positive Rate', fontsize=label_text_size)
+    plt.ylabel('True Positive Rate', fontsize=label_text_size)
     #plt.title('')
     plt.legend(loc="lower right")
     plt.savefig(filename, format="tif", dpi=fig_dpi)
