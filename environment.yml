@@ -1,11 +1,11 @@
-name: preop
+name: preop3
 channels:
   - brittainhard
   - anaconda
   - conda-forge
   
 dependencies:
-  - python=2.7
+  - python=3.6
   - fancyimpute
   - scikit-learn=0.19.1
   - pandas
@@ -17,3 +17,5 @@ dependencies:
   - nb_conda_kernels
   - seaborn
   - dill=0.2.7.1
+  - pillow
+  - tqdm

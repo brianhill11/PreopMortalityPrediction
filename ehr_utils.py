@@ -26,9 +26,10 @@ COLOUR_6 = "#FF3300" # orange
 # uh-oh, ran out of choices...
 COLOR_7 = 'black'
 COLOR_8 = 'red'
-PLOT_COLOURS = [COLOUR_1, COLOUR_2, COLOUR_3, COLOUR_4, COLOUR_5, COLOUR_6, COLOR_7, COLOR_8]
+COLOR_9 = 'silver'
+PLOT_COLOURS = [COLOUR_1, COLOUR_2, COLOUR_3, COLOUR_4, COLOUR_5, COLOUR_6, COLOR_7, COLOR_8, COLOR_9]
 # DPI for figures (for BJA, use 1200)
-fig_dpi = 600
+fig_dpi = 1200
 # for figure text
 label_text_size=16
 legend_text_size=12
@@ -45,7 +46,7 @@ from matplotlib import rc
 #rc('font',**{'family':'serif','serif':['Palatino']})
 #rc('text', usetex=True)
 import matplotlib as mpl
-mpl.rcParams['axes.linewidth'] = 0.25
+#mpl.rcParams['axes.linewidth'] = 0.25
 #mpl.rcParams['font.sans-serif'] = "Helvetica"
 # Then, "ALWAYS use sans-serif fonts"
 #mpl.rcParams['font.family'] = "sans-serif"
@@ -67,8 +68,8 @@ def plot_roc_curve(models, model_names, model_probs, y_test, filename):
     plt.plot([0, 1], [0, 1], color='black', lw=lw, linestyle='--')
     plt.xlim([0.0, 1.05])
     plt.ylim([0.0, 1.05])
-    plt.yticks(np.arange(0., 1.1, 0.2))
-    plt.xticks(np.arange(0., 1.1, 0.2))
+    plt.yticks(np.arange(0., 1.1, 0.1))
+    plt.xticks(np.arange(0., 1.1, 0.1))
     ax = plt.axes()
     # default width = 2, def length = 6
     ax.set_yticks(np.arange(0., 1.1, 0.1), minor=True)
@@ -80,7 +81,7 @@ def plot_roc_curve(models, model_names, model_probs, y_test, filename):
     #plt.title('Receiver Operating Characteristic')
     plt.legend(loc="lower right",fontsize=legend_text_size)
     plt.tight_layout()
-    plt.savefig(filename, format="png", dpi=fig_dpi)
+    plt.savefig(filename, format="tif", dpi=fig_dpi)
     plt.show()
 
 
@@ -103,18 +104,18 @@ def plot_precision_recall_curve(models, model_names, model_probs, y_test, filena
     plt.xlabel('Recall', fontsize=label_text_size)
     plt.ylabel('Precision', fontsize=label_text_size)
     plt.ylim([0.0, 1.05])
-    plt.yticks(np.arange(0., 1.1, 0.2))
+    plt.yticks(np.arange(0., 1.1, 0.1))
     ax = plt.axes()
     ax.tick_params(direction='out', length=6, width=0.25, colors='black', labelsize=label_text_size)
     ax.tick_params(axis = 'both', which = 'minor', width=0.25)
     ax.set_yticks(np.arange(0., 1.1, 0.1), minor=True)
     ax.set_xticks(np.arange(0., 1.1, 0.1), minor=True)
     plt.xlim([0.0, 1.05])
-    plt.xticks(np.arange(0., 1.1, 0.2))
+    plt.xticks(np.arange(0., 1.1, 0.1))
     #plt.title('Precision-Recall curve')
     plt.legend(loc="upper right", fontsize=legend_text_size)
     plt.tight_layout()
-    plt.savefig(filename, format="png", dpi=fig_dpi)
+    plt.savefig(filename, format="tif", dpi=fig_dpi)
     plt.show()
 
 
@@ -122,18 +123,18 @@ def confusion_matrix_classification_rpt(models, model_names, model_predictions, 
     for i in range(len(model_names)):
 #         precision, recall, f1, support = metrics.precision_recall_fscore_support(y_test, model_predictions[i], average='binary')
 #         tn, fp, fn, tp = metrics.confusion_matrix(y_test, model_predictions[i]).ravel()
-        print "=================================================="
-        print "MODEL: ", model_names[i]
+        print("==================================================")
+        print("MODEL: ", model_names[i])
 #         print "precision:\t", precision
 #         print "recall:\t\t", recall
 #         print "specificity:\t", float(tn) / (tn + fp)
 #         print "F1:\t\t", f1
 #         print "Support:\t", support
-        print confusion_matrix(y_test, model_predictions[i])
+        print(confusion_matrix(y_test, model_predictions[i]))
         pd.DataFrame(confusion_matrix(y_test, model_predictions[i])).to_csv(
             os.path.join(dir_to_save_files, model_names[i].lower().replace(" ", "_") + "_confusion_matrix.txt"), sep='|', header=False, index=False)
 #         print "TN:", tn, "FP:", fp, "FN:", fn, "TP:", tp
-        print classification_report(y_test, model_predictions[i], digits=4)
+        print(classification_report(y_test, model_predictions[i], digits=4))
 
     
 def plot_accuracy_roc_auc(models, model_names, model_predictions, model_probs, y_train, y_test, filename):
@@ -175,15 +176,15 @@ def plot_accuracy_roc_auc(models, model_names, model_predictions, model_probs, y
     plt.show()
 
     for i in range(len(model_names)):
-        print model_names[i], "Accuracy:\t\t", accuracy_score(y_test, model_predictions[i])
-        print model_names[i], "ROC AUC:\t\t", roc_auc_score(y_test, model_probs[i][:, 1])
-        print model_names[i], "Avg. Precision:\t\t", average_precision_score(y_test, model_probs[i][:, 1])    
+        print(model_names[i], "Accuracy:\t\t", accuracy_score(y_test, model_predictions[i]))
+        print(model_names[i], "ROC AUC:\t\t", roc_auc_score(y_test, model_probs[i][:, 1]))
+        print(model_names[i], "Avg. Precision:\t\t", average_precision_score(y_test, model_probs[i][:, 1]))  
 
         
 def plot_mean_square_error(models, model_names, mse):
-    print "Mean Square Error:"
+    print("Mean Square Error:")
     for i in range(len(model_names)):
-        print model_names[i],"\t\t", mse[i]
+        print(model_names[i],"\t\t", mse[i])
 
     plt.figure(figsize=default_size)
     plt.gca().yaxis.grid(True)
@@ -359,60 +360,60 @@ def parse_last_ef_col(line):
 
 
 def create_icd10_ccs_map(ccs_icd_mapping_f):
-	icd_ccs_map = {}
-	with open(ccs_icd_mapping_f, 'r') as ccs_f:
-    		header = ccs_f.readline()
-    		for line in ccs_f:
-        		line = line.split(",")
-        		# map ICD10 CODE -> CSS CATEGORY
-        		icd_ccs_map[line[0]] = line[1]
-		return icd_ccs_map
+    icd_ccs_map = {}
+    with open(ccs_icd_mapping_f, 'r') as ccs_f:
+            header = ccs_f.readline()
+            for line in ccs_f:
+                line = line.split(",")
+                # map ICD10 CODE -> CSS CATEGORY
+                icd_ccs_map[line[0]] = line[1]
+    return icd_ccs_map
 
 def get_ccs_vector():
-	NUM_UNIQUE_CCS_CATEGORIES = 280
-	main_f = os.path.join(data_dir, "Main_Data.txt")
-	outcomes_f = os.path.join(data_dir, "Outcomes_Data.txt")
-	icd_codes_f = os.path.join(data_dir, "ICD9_10Codes.txt")
-	main_filtered_f = "Main_Data_filtered.txt"
-	ccs_icd_mapping_f = "external_data/ccs_dx_icd10cm_2018_1.csv"
+    NUM_UNIQUE_CCS_CATEGORIES = 280
+    main_f = os.path.join(data_dir, "Main_Data.txt")
+    outcomes_f = os.path.join(data_dir, "Outcomes_Data.txt")
+    icd_codes_f = os.path.join(data_dir, "ICD9_10Codes.txt")
+    main_filtered_f = "Main_Data_filtered.txt"
+    ccs_icd_mapping_f = "external_data/ccs_dx_icd10cm_2018_1.csv"
 
-	# get mapping from ICD10 code to CCS category
-	icd_ccs_map = create_icd10_ccs_map(ccs_icd_mapping_f)	
+    # get mapping from ICD10 code to CCS category
+    icd_ccs_map = create_icd10_ccs_map(ccs_icd_mapping_f)	
 
-	with open(main_filtered_f, 'rb') as main_file:
-		header = main_file.readline().split("\t")
-		admsn_id_idx = header.idx("ADMSN_ID")
-		
-		# for each patient in main file
-		for line in main:
-			line = line.split("\t")
-			# initialize vector to zero for categories
-			ccs_cat_vec = np.zeros(NUM_UNIQUE_CCS_CATEGORIES)
-			# create list to hold CCS categories for each patient
-			ccs_list = []
-			# get this patient's ADMSN_ID
-			print line
-			admsn_id = line[admsn_id_idx]
-			
-			with open(icd_codes_f) as icd_codes_file:
-				icd_codes = csv.DictReader(icd_codes_file, delimiter="|")
-				# find codes that match ADMSN_ID
-				for l in icd_codes:
-					if l['ENCOUNTER_ID'] == admsn_id:
-						# map ICD10 code to CCS category
-						ccs_cat = icd_ccs_map[l['ICD-10-CM CODE']]
-						# add to list 
-						ccs_list.append(ccs_cat)
-				# for each CCS category in our list, increment counter in feature vector
-				# so that if we see a particular category multiple times, it has a higher
-				# value in the feature vector than a cat we only see once
-				print admns_id, ccs_list
-				for cat in ccs_list:
-					ccs_cat_vec[int(cat)] += 1
-				print ccs_cat_vec
-				print "\n"	
-					
+    with open(main_filtered_f, 'rb') as main_file:
+        header = main_file.readline().split("\t")
+        admsn_id_idx = header.idx("ADMSN_ID")
+
+        # for each patient in main file
+        for line in main:
+            line = line.split("\t")
+            # initialize vector to zero for categories
+            ccs_cat_vec = np.zeros(NUM_UNIQUE_CCS_CATEGORIES)
+            # create list to hold CCS categories for each patient
+            ccs_list = []
+            # get this patient's ADMSN_ID
+            print(line)
+            admsn_id = line[admsn_id_idx]
+
+            with open(icd_codes_f) as icd_codes_file:
+                icd_codes = csv.DictReader(icd_codes_file, delimiter="|")
+                # find codes that match ADMSN_ID
+                for l in icd_codes:
+                    if l['ENCOUNTER_ID'] == admsn_id:
+                        # map ICD10 code to CCS category
+                        ccs_cat = icd_ccs_map[l['ICD-10-CM CODE']]
+                        # add to list 
+                        ccs_list.append(ccs_cat)
+                # for each CCS category in our list, increment counter in feature vector
+                # so that if we see a particular category multiple times, it has a higher
+                # value in the feature vector than a cat we only see once
+                print(admns_id, ccs_list)
+                for cat in ccs_list:
+                    ccs_cat_vec[int(cat)] += 1
+                print(ccs_cat_vec)
+                print("\n")
+
 
 
 if __name__ == '__main__':
-	get_ccs_vector()
+    get_ccs_vector()
