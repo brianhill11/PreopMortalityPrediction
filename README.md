@@ -4,6 +4,8 @@ This repo is for code used in the Preoperative Surgical Risk Prediction project.
 
 Brian L. Hill, Robert Brown, Eilon Gabel, Nadav Rakocz, Christine Lee, Maxime Cannesson, Pierre Baldi, Loes Olde Loohuis, Ruth Johnson, Brandon Jew, Uri Maoz, Aman Mahajan, Sriram Sankararaman, Ira Hofer, Eran Halperin. "An automated machine learning-based model predicts postoperative mortality using readily-extractable preoperative electronic health record data". British Journal of Anaesthesia (2019).
 
+## Input file format
+
 A file containing the column headers is located [here](https://github.com/brianhill11/PreopMortalityPrediction/blob/master/data/main_header.txt). The scripts expect an input file using these column names, as well as pipe (|) delimited features.  
 
 ## Testing the model
